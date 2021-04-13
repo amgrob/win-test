@@ -45,6 +45,6 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
-    - build-windows
+    - build-win
     - build-macos
-    - build-linux 
+    - build-nix 
