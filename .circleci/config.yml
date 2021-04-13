@@ -1,13 +1,50 @@
 version: 2.1
 
+defaults: &defaults
+  working_directory: ~/repo
+  resource_class: large
+
 orbs:
   win: circleci/windows@2.2.0
 
 jobs:
-  build:
+  build-win:
     executor:
       name: win/default
     steps:
       - run:
          command: node --version
          shell: cmd.exe
+  build-nix:
+    <<: *defaults
+    docker:
+      - image: circleci/node:15.0
+    steps:
+      - checkout
+      - run: yarn --version
+    #   - run: yarn cache clean --force
+    #   - run: yarn run production-build
+    #   - save_cache:
+    #       key: amplify-codegen-yarn-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    #       paths:
+    #         - ~/.cache
+    #   - save_cache:
+    #       key: amplify-codegen-ssh-deps-{{ .Branch }}
+    #       paths:
+    #         - ~/.ssh
+    #   - persist_to_workspace:
+    #       root: .
+    #       paths: .
+  build-macos:
+    macos:
+       xcode: 11.3.0
+    steps:
+      - checkout
+      - run: echo 'Do something'
+      
+workflows:
+  build-and-deploy:
+    jobs:
+    - build-windows
+    - build-macos
+    - build-linux 
