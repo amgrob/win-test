@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   working_directory: ~/repo
-  resource_class: large
+  resource_class: medium
 
 orbs:
   win: circleci/windows@2.2.0
@@ -35,16 +35,16 @@ jobs:
     #   - persist_to_workspace:
     #       root: .
     #       paths: .
-  build-macos:
-    macos:
-       xcode: 11.3.0
-    steps:
-      - checkout
-      - run: echo 'Do something'
+#   build-macos:
+#     macos:
+#       xcode: 11.3.0
+#     steps:
+#       - checkout
+#       - run: echo 'Do something'
       
 workflows:
   build-and-deploy:
     jobs:
     - build-win
-    - build-macos
+    # - build-macos
     - build-nix 
