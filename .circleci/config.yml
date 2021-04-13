@@ -62,5 +62,5 @@ workflows:
     - build-nix 
     - test:
         requires:
-          - build
+          - build-nix
     
