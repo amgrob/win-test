@@ -1,11 +1,9 @@
 version: 2.1
 
 defaults: &defaults
-  working_directory: ~/repo
   resource_class: medium
 
 win: &win
-  working_directory: ~/repo
   executor:
       name: win/default
   
