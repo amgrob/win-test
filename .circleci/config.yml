@@ -19,7 +19,7 @@ jobs:
   build-cli:
     <<: *nix
     steps:
-      checkout
+      - checkout
       - run:
           command: git clone https://github.com/aws-amplify/amplify-cli
       - run: 
