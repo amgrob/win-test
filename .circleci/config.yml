@@ -6,12 +6,33 @@ defaults: &defaults
 win: &win
   executor:
       name: win/default
+
+nix: &nix
+  docker:
+      - image: circleci/node:15.0
   
 
 orbs:
   win: circleci/windows@2.2.0
 
 jobs:
+  build-cli:
+    <<: *nix
+    steps:
+      - run:
+          command: git clone https://github.com/aws-amplify/amplify-cli && cd amplify-cli
+      - run: yarn run production-build
+      - save_cache:
+          key: amplify-cli-yarn-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache
+      - save_cache:
+          key: amplify-cli-ssh-deps-{{ .Branch }}
+          paths:
+            - ~/.ssh
+      - persist_to_workspace:
+          root: .
+          paths: .
   build-win:
     <<: *win
     steps:
@@ -23,8 +44,7 @@ jobs:
          shell: cmd.exe
   build-nix:
     <<: *defaults
-    docker:
-      - image: circleci/node:15.0
+    <<: *nix
     steps:
       - checkout
       - run: yarn --version
@@ -72,6 +92,7 @@ jobs:
 workflows:
   build-and-deploy:
     jobs:
+    - build-cli
     - build-win
     # - build-macos
     - build-nix 
