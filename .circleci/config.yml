@@ -5,8 +5,10 @@ defaults: &defaults
   resource_class: medium
 
 win:
+  working_directory: ~/repo
   executor:
       name: win/default
+  resource_class: medium
   
 
 orbs:
