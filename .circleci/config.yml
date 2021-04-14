@@ -19,21 +19,26 @@ jobs:
   build-cli:
     <<: *nix
     steps:
+      checkout
       - run:
           command: git clone https://github.com/aws-amplify/amplify-cli
       - run: 
-          command: cd amplify-cli && yarn run production-build
-      - save_cache:
-          key: amplify-cli-yarn-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache
-      - save_cache:
-          key: amplify-cli-ssh-deps-{{ .Branch }}
-          paths:
-            - ~/.ssh
-      - persist_to_workspace:
-          root: .
-          paths: .
+          command: pwd
+      - run:
+          command: ls -la
+      # - run: 
+      #     command: cd amplify-cli && yarn run production-build
+      # - save_cache:
+      #     key: amplify-cli-yarn-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      #     paths:
+      #       - ~/.cache
+      # - save_cache:
+      #     key: amplify-cli-ssh-deps-{{ .Branch }}
+      #     paths:
+      #       - ~/.ssh
+      # - persist_to_workspace:
+      #     root: .
+      #     paths: .
   build-win:
     <<: *win
     steps:
@@ -94,10 +99,10 @@ workflows:
   build-and-deploy:
     jobs:
     - build-cli
-    - build-win
-    # - build-macos
-    - build-nix 
-    - test-nix:
-        requires:
-          - build-nix
+    # - build-win
+    # # - build-macos
+    # - build-nix 
+    # - test-nix:
+    #     requires:
+    #       - build-nix
     
