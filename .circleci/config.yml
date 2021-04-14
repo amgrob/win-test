@@ -28,6 +28,7 @@ jobs:
     steps:
       - checkout
       - run: yarn --version
+      - run: npm i
       - persist_to_workspace:
           root: .
           paths: .
