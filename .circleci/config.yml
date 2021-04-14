@@ -28,6 +28,9 @@ jobs:
     steps:
       - checkout
       - run: yarn --version
+      - persist_to_workspace:
+          root: .
+          paths: .
     #   - run: yarn cache clean --force
     #   - run: yarn run production-build
     #   - save_cache:
