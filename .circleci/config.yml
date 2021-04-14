@@ -20,8 +20,9 @@ jobs:
     <<: *nix
     steps:
       - run:
-          command: git clone https://github.com/aws-amplify/amplify-cli && cd amplify-cli
-      - run: yarn run production-build
+          command: git clone https://github.com/aws-amplify/amplify-cli
+      - run: 
+          command: cd amplify-cli && yarn run production-build
       - save_cache:
           key: amplify-cli-yarn-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
