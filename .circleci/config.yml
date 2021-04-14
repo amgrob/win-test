@@ -4,13 +4,17 @@ defaults: &defaults
   working_directory: ~/repo
   resource_class: medium
 
+win:
+  executor:
+      name: win/default
+  
+
 orbs:
   win: circleci/windows@2.2.0
 
 jobs:
   build-win:
-    executor:
-      name: win/default
+    <<: *win
     steps:
       - run:
          command: node --version
@@ -44,10 +48,18 @@ jobs:
 #     steps:
 #       - checkout
 #       - run: echo 'Do something'
-  test:
+  test-nix:
     <<: *defaults
     docker:
       - image: circleci/node:15.0
+    steps:
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Lint
+          command: yarn lint
+  test-win:
+    <<: *win
     steps:
       - attach_workspace:
           at: ./
@@ -60,7 +72,7 @@ workflows:
     - build-win
     # - build-macos
     - build-nix 
-    - test:
+    - test-nix:
         requires:
           - build-nix
     
